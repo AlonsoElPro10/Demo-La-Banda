@@ -21,6 +21,8 @@ import {
 const LOCAL_PASSWORD = "KFCtest00";
 const STORAGE_KEY = "kfc_demo_orders";
 const REVIEW_KEY = "kfc_demo_review_orders";
+const SURVEY_LINK =
+  "https://docs.google.com/forms/d/e/1FAIpQLScZmsmyoTerVQ-vvwZsfqZzSj3m_GMKSGPSn0JM6h5mg9IQcQ/viewform";
 
 function readStorage(key) {
   try {
@@ -519,6 +521,14 @@ function LocalPanel({
                   confirmación.
                 </p>
               </div>
+
+              <div className="rounded-2xl bg-neutral-950 p-4 text-white">
+                <p className="font-black">4. Cliente confirma recepción</p>
+                <p className="mt-1 text-sm text-white/60">
+                  Después de ver la foto, el cliente puede marcar que recibió el
+                  pedido y responder la encuesta.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -667,6 +677,7 @@ function LocalPanel({
 function ClientPanel({ orders }) {
   const [searchNumber, setSearchNumber] = useState("");
   const [searched, setSearched] = useState(false);
+  const [received, setReceived] = useState(false);
 
   const foundOrder = useMemo(() => {
     return orders.find(
@@ -674,6 +685,12 @@ function ClientPanel({ orders }) {
         order.orderNumber.toLowerCase() === searchNumber.trim().toLowerCase()
     );
   }, [orders, searchNumber]);
+
+  const handleSearchChange = (event) => {
+    setSearchNumber(event.target.value);
+    setSearched(false);
+    setReceived(false);
+  };
 
   return (
     <section className="rounded-[2rem] border border-neutral-200 bg-white p-6 shadow-xl shadow-neutral-200/50">
@@ -700,16 +717,16 @@ function ClientPanel({ orders }) {
         <div className="mt-2 flex gap-2">
           <input
             value={searchNumber}
-            onChange={(event) => {
-              setSearchNumber(event.target.value);
-              setSearched(false);
-            }}
+            onChange={handleSearchChange}
             placeholder="Ej: KFC-12345"
             className="h-12 flex-1 rounded-2xl border border-neutral-200 bg-white px-4 text-sm outline-none focus:border-neutral-500"
           />
 
           <button
-            onClick={() => setSearched(true)}
+            onClick={() => {
+              setSearched(true);
+              setReceived(false);
+            }}
             className="flex items-center gap-2 rounded-2xl bg-neutral-950 px-5 text-sm font-black text-white"
           >
             <Search size={17} />
@@ -765,6 +782,45 @@ function ClientPanel({ orders }) {
                   <p className="mt-2 text-sm leading-6">{foundOrder.note}</p>
                 )}
               </div>
+
+              {!received ? (
+                <div className="mt-5 rounded-[1.5rem] border border-neutral-200 bg-neutral-50 p-5">
+                  <p className="font-black">Confirmación del cliente</p>
+                  <p className="mt-1 text-sm leading-6 text-neutral-500">
+                    Si ya recibiste tu pedido y coincide con la foto mostrada,
+                    confirma la recepción para continuar con la encuesta.
+                  </p>
+
+                  <button
+                    onClick={() => setReceived(true)}
+                    className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-neutral-950 px-5 py-3 text-sm font-black text-white transition hover:scale-[1.02]"
+                  >
+                    <CheckCircle2 size={17} />
+                    Recibí mi pedido
+                  </button>
+                </div>
+              ) : (
+                <div className="mt-5 rounded-[1.5rem] border border-emerald-200 bg-emerald-50 p-5 text-emerald-800">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 size={22} />
+                    <p className="font-black">Pedido recibido correctamente</p>
+                  </div>
+
+                  <p className="mt-2 text-sm leading-6">
+                    Gracias por confirmar la recepción. Ahora puedes responder
+                    una breve encuesta sobre tu experiencia.
+                  </p>
+
+                  <a
+                    href={SURVEY_LINK}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-4 flex w-full items-center justify-center rounded-full bg-emerald-600 px-5 py-3 text-sm font-black text-white transition hover:scale-[1.02]"
+                  >
+                    Responder encuesta
+                  </a>
+                </div>
+              )}
             </div>
           </article>
         ) : (
