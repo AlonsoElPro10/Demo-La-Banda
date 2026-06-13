@@ -15,11 +15,10 @@ import {
   AlertTriangle,
   ArrowRight,
   ClipboardCheck,
-  RotateCcw,
   University,
 } from "lucide-react";
 
-const PASSWORD = "prueba1234";
+const LOCAL_PASSWORD = "KFCtest00";
 const STORAGE_KEY = "kfc_demo_orders";
 const REVIEW_KEY = "kfc_demo_review_orders";
 
@@ -38,14 +37,11 @@ function saveStorage(key, value) {
 function ChileLogo() {
   return (
     <div className="flex items-center gap-3">
-      <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-2xl border border-white/20 bg-white p-2 shadow-sm">
+      <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-white/20 bg-white p-2 shadow-sm">
         <img
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Escudo_Universidad_de_Chile.svg/240px-Escudo_Universidad_de_Chile.svg.png"
+          src="/logo-uchile.jpg"
           alt="Logo Universidad de Chile"
           className="h-full w-full object-contain"
-          onError={(event) => {
-            event.currentTarget.style.display = "none";
-          }}
         />
       </div>
 
@@ -71,7 +67,7 @@ function LoginCard({ title, subtitle, icon: Icon, onLogin }) {
   const submit = (event) => {
     event.preventDefault();
 
-    if (password === PASSWORD) {
+    if (password === LOCAL_PASSWORD) {
       setError("");
       onLogin();
       return;
@@ -89,6 +85,7 @@ function LoginCard({ title, subtitle, icon: Icon, onLogin }) {
         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-neutral-950 text-white">
           <Icon size={22} />
         </div>
+
         <div>
           <h2 className="text-2xl font-black">{title}</h2>
           <p className="text-sm text-neutral-500">{subtitle}</p>
@@ -99,11 +96,12 @@ function LoginCard({ title, subtitle, icon: Icon, onLogin }) {
 
       <div className="mt-2 flex items-center gap-2 rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3">
         <Lock size={18} className="text-neutral-400" />
+
         <input
           type="password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          placeholder="Ingresa la contraseña"
+          placeholder="Ingresa la contraseña del local"
           className="w-full bg-transparent text-sm outline-none"
         />
       </div>
@@ -140,7 +138,13 @@ function StatusBadge({ status }) {
   );
 }
 
-function LocalPanel({ orders, setOrders, reviewOrders, setReviewOrders, onLogout }) {
+function LocalPanel({
+  orders,
+  setOrders,
+  reviewOrders,
+  setReviewOrders,
+  onLogout,
+}) {
   const [localTab, setLocalTab] = useState("nuevo");
   const [orderNumber, setOrderNumber] = useState("");
   const [photo, setPhoto] = useState("");
@@ -185,7 +189,9 @@ function LocalPanel({ orders, setOrders, reviewOrders, setReviewOrders, onLogout
     }
 
     if (!note.trim()) {
-      setMessage("Si el pedido está NO OK, debes escribir una observación obligatoria.");
+      setMessage(
+        "Si el pedido está NO OK, debes escribir una observación obligatoria."
+      );
       return;
     }
 
@@ -261,7 +267,9 @@ function LocalPanel({ orders, setOrders, reviewOrders, setReviewOrders, onLogout
     setPhoto(reviewOrder.photo);
     setStatus("ok");
     setNote(`Corregido desde revisión: ${reviewOrder.note}`);
-    setMessage("Pedido corregido. Ahora confirma OK y publícalo para que aparezca al cliente.");
+    setMessage(
+      "Pedido corregido. Ahora confirma OK y publícalo para que aparezca al cliente."
+    );
     setLocalTab("nuevo");
   };
 
@@ -290,6 +298,7 @@ function LocalPanel({ orders, setOrders, reviewOrders, setReviewOrders, onLogout
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-600 text-white">
             <Store size={22} />
           </div>
+
           <div>
             <h2 className="text-2xl font-black">Local: KFC</h2>
             <p className="text-sm text-neutral-500">
@@ -311,7 +320,9 @@ function LocalPanel({ orders, setOrders, reviewOrders, setReviewOrders, onLogout
         <button
           onClick={() => setLocalTab("nuevo")}
           className={`rounded-[1rem] px-4 py-3 text-sm font-black transition ${
-            localTab === "nuevo" ? "bg-white text-neutral-950 shadow-sm" : "text-neutral-500"
+            localTab === "nuevo"
+              ? "bg-white text-neutral-950 shadow-sm"
+              : "text-neutral-500"
           }`}
         >
           Nuevo pedido
@@ -320,7 +331,9 @@ function LocalPanel({ orders, setOrders, reviewOrders, setReviewOrders, onLogout
         <button
           onClick={() => setLocalTab("revision")}
           className={`rounded-[1rem] px-4 py-3 text-sm font-black transition ${
-            localTab === "revision" ? "bg-white text-neutral-950 shadow-sm" : "text-neutral-500"
+            localTab === "revision"
+              ? "bg-white text-neutral-950 shadow-sm"
+              : "text-neutral-500"
           }`}
         >
           Revisión interna ({reviewOrders.length})
@@ -329,7 +342,9 @@ function LocalPanel({ orders, setOrders, reviewOrders, setReviewOrders, onLogout
         <button
           onClick={() => setLocalTab("publicados")}
           className={`rounded-[1rem] px-4 py-3 text-sm font-black transition ${
-            localTab === "publicados" ? "bg-white text-neutral-950 shadow-sm" : "text-neutral-500"
+            localTab === "publicados"
+              ? "bg-white text-neutral-950 shadow-sm"
+              : "text-neutral-500"
           }`}
         >
           Publicados ({orders.length})
@@ -424,7 +439,10 @@ function LocalPanel({ orders, setOrders, reviewOrders, setReviewOrders, onLogout
 
             <div className="mt-5">
               <label className="text-sm font-black text-neutral-700">
-                Observación {status === "no" && <span className="text-red-600">obligatoria</span>}
+                Observación{" "}
+                {status === "no" && (
+                  <span className="text-red-600">obligatoria</span>
+                )}
               </label>
 
               <textarea
@@ -470,6 +488,7 @@ function LocalPanel({ orders, setOrders, reviewOrders, setReviewOrders, onLogout
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-neutral-100">
                 <ShieldCheck size={20} />
               </div>
+
               <div>
                 <h3 className="text-xl font-black">Flujo de control</h3>
                 <p className="text-sm text-neutral-500">
@@ -496,7 +515,8 @@ function LocalPanel({ orders, setOrders, reviewOrders, setReviewOrders, onLogout
               <div className="rounded-2xl bg-neutral-50 p-4">
                 <p className="font-black">3. Cliente consulta</p>
                 <p className="mt-1 text-sm text-neutral-500">
-                  Con el número de orden, el cliente ve la foto y la confirmación.
+                  Con el número de orden, el cliente ve la foto y la
+                  confirmación.
                 </p>
               </div>
             </div>
@@ -506,7 +526,9 @@ function LocalPanel({ orders, setOrders, reviewOrders, setReviewOrders, onLogout
 
       {localTab === "revision" && (
         <div>
-          <h3 className="mb-4 text-xl font-black">Pedidos con observación interna</h3>
+          <h3 className="mb-4 text-xl font-black">
+            Pedidos con observación interna
+          </h3>
 
           {reviewOrders.length === 0 ? (
             <div className="rounded-[1.5rem] border border-dashed border-neutral-300 bg-neutral-50 p-8 text-center">
@@ -533,8 +555,12 @@ function LocalPanel({ orders, setOrders, reviewOrders, setReviewOrders, onLogout
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-start justify-between gap-2">
                         <div>
-                          <p className="text-lg font-black">{order.orderNumber}</p>
-                          <p className="text-xs font-bold text-red-400">{order.createdAt}</p>
+                          <p className="text-lg font-black">
+                            {order.orderNumber}
+                          </p>
+                          <p className="text-xs font-bold text-red-400">
+                            {order.createdAt}
+                          </p>
                         </div>
 
                         <StatusBadge status="no" />
@@ -573,7 +599,9 @@ function LocalPanel({ orders, setOrders, reviewOrders, setReviewOrders, onLogout
 
       {localTab === "publicados" && (
         <div>
-          <h3 className="mb-4 text-xl font-black">Pedidos publicados para cliente</h3>
+          <h3 className="mb-4 text-xl font-black">
+            Pedidos publicados para cliente
+          </h3>
 
           {orders.length === 0 ? (
             <div className="rounded-[1.5rem] border border-dashed border-neutral-300 bg-neutral-50 p-8 text-center">
@@ -600,8 +628,12 @@ function LocalPanel({ orders, setOrders, reviewOrders, setReviewOrders, onLogout
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-start justify-between gap-2">
                         <div>
-                          <p className="text-lg font-black">{order.orderNumber}</p>
-                          <p className="text-xs font-bold text-neutral-400">{order.createdAt}</p>
+                          <p className="text-lg font-black">
+                            {order.orderNumber}
+                          </p>
+                          <p className="text-xs font-bold text-neutral-400">
+                            {order.createdAt}
+                          </p>
                         </div>
 
                         <StatusBadge status={order.status} />
@@ -632,7 +664,7 @@ function LocalPanel({ orders, setOrders, reviewOrders, setReviewOrders, onLogout
   );
 }
 
-function ClientPanel({ orders, onLogout }) {
+function ClientPanel({ orders }) {
   const [searchNumber, setSearchNumber] = useState("");
   const [searched, setSearched] = useState(false);
 
@@ -650,21 +682,14 @@ function ClientPanel({ orders, onLogout }) {
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-neutral-950 text-white">
             <User size={22} />
           </div>
+
           <div>
             <h2 className="text-2xl font-black">Cliente</h2>
             <p className="text-sm text-neutral-500">
-              Ingresa tu número de orden para revisar la evidencia.
+              Ingresa tu número de orden para revisar la evidencia del pedido.
             </p>
           </div>
         </div>
-
-        <button
-          onClick={onLogout}
-          className="flex items-center gap-2 rounded-full bg-neutral-100 px-4 py-2 text-sm font-black text-neutral-700 hover:bg-neutral-200"
-        >
-          <LogOut size={16} />
-          Salir
-        </button>
       </div>
 
       <div className="rounded-[1.5rem] bg-neutral-50 p-5">
@@ -699,7 +724,8 @@ function ClientPanel({ orders, onLogout }) {
             <Search size={38} className="mx-auto text-neutral-300" />
             <p className="mt-3 font-black">Busca tu pedido</p>
             <p className="mt-1 text-sm text-neutral-500">
-              El cliente podrá ver la foto publicada por KFC.
+              El cliente puede ver la foto publicada por KFC usando su número
+              de orden.
             </p>
           </div>
         ) : foundOrder ? (
@@ -761,7 +787,6 @@ export default function App() {
   const [reviewOrders, setReviewOrders] = useState([]);
   const [activeTab, setActiveTab] = useState("local");
   const [localLogged, setLocalLogged] = useState(false);
-  const [clientLogged, setClientLogged] = useState(false);
 
   useEffect(() => {
     setOrders(readStorage(STORAGE_KEY));
@@ -875,15 +900,8 @@ export default function App() {
               onLogin={() => setLocalLogged(true)}
             />
           )
-        ) : clientLogged ? (
-          <ClientPanel orders={orders} onLogout={() => setClientLogged(false)} />
         ) : (
-          <LoginCard
-            title="Acceso Cliente"
-            subtitle="El cliente revisa su pedido usando el número de orden."
-            icon={User}
-            onLogin={() => setClientLogged(true)}
-          />
+          <ClientPanel orders={orders} />
         )}
       </main>
     </div>
