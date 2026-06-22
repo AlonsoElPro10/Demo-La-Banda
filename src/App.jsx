@@ -18,9 +18,9 @@ import {
   University,
 } from "lucide-react";
 
-const LOCAL_PASSWORD = "KFCtest00";
-const STORAGE_KEY = "kfc_demo_orders";
-const REVIEW_KEY = "kfc_demo_review_orders";
+const LOCAL_PASSWORD = "1234";
+const STORAGE_KEY = "restaurante_demo_orders";
+const REVIEW_KEY = "restaurante_demo_review_orders";
 const SURVEY_LINK =
   "https://docs.google.com/forms/d/e/1FAIpQLScZmsmyoTerVQ-vvwZsfqZzSj3m_GMKSGPSn0JM6h5mg9IQcQ/viewform";
 
@@ -103,7 +103,7 @@ function LoginCard({ title, subtitle, icon: Icon, onLogin }) {
           type="password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          placeholder="Ingresa la contraseña del local"
+          placeholder="Ingresa la contraseña del restaurante"
           className="w-full bg-transparent text-sm outline-none"
         />
       </div>
@@ -156,7 +156,7 @@ function LocalPanel({
 
   const generateOrderNumber = () => {
     const random = Math.floor(10000 + Math.random() * 90000);
-    setOrderNumber(`KFC-${random}`);
+    setOrderNumber(`ORD-${random}`);
   };
 
   const handlePhoto = (event) => {
@@ -302,7 +302,7 @@ function LocalPanel({
           </div>
 
           <div>
-            <h2 className="text-2xl font-black">Local: KFC</h2>
+            <h2 className="text-2xl font-black">Restaurante</h2>
             <p className="text-sm text-neutral-500">
               Registro y validación visual antes de publicar al cliente.
             </p>
@@ -366,7 +366,7 @@ function LocalPanel({
               <input
                 value={orderNumber}
                 onChange={(event) => setOrderNumber(event.target.value)}
-                placeholder="Ej: KFC-12345"
+                placeholder="Ej: ORD-12345"
                 className="h-12 flex-1 rounded-2xl border border-neutral-200 bg-white px-4 text-sm outline-none focus:border-neutral-500"
               />
 
@@ -395,7 +395,7 @@ function LocalPanel({
                     <Upload size={36} className="text-neutral-400" />
                     <p className="mt-3 font-black">Subir foto</p>
                     <p className="mt-1 text-sm text-neutral-500">
-                      Foto tomada por el local antes de entregar el pedido.
+                      Foto tomada por el restaurante antes de entregar el pedido.
                     </p>
                   </>
                 )}
@@ -501,7 +501,7 @@ function LocalPanel({
 
             <div className="space-y-3">
               <div className="rounded-2xl bg-neutral-50 p-4">
-                <p className="font-black">1. Local toma foto</p>
+                <p className="font-black">1. Restaurante toma foto</p>
                 <p className="mt-1 text-sm text-neutral-500">
                   Se registra evidencia visual con número de orden.
                 </p>
@@ -718,7 +718,7 @@ function ClientPanel({ orders }) {
           <input
             value={searchNumber}
             onChange={handleSearchChange}
-            placeholder="Ej: KFC-12345"
+            placeholder="Ej: ORD-12345"
             className="h-12 flex-1 rounded-2xl border border-neutral-200 bg-white px-4 text-sm outline-none focus:border-neutral-500"
           />
 
@@ -741,8 +741,8 @@ function ClientPanel({ orders }) {
             <Search size={38} className="mx-auto text-neutral-300" />
             <p className="mt-3 font-black">Busca tu pedido</p>
             <p className="mt-1 text-sm text-neutral-500">
-              El cliente puede ver la foto publicada por KFC usando su número
-              de orden.
+              El cliente puede ver la foto publicada por el restaurante usando
+              su número de orden.
             </p>
           </div>
         ) : foundOrder ? (
@@ -763,7 +763,7 @@ function ClientPanel({ orders }) {
                     {foundOrder.orderNumber}
                   </h3>
                   <p className="mt-1 text-sm text-neutral-500">
-                    Subido por KFC el {foundOrder.createdAt}
+                    Subido por el restaurante el {foundOrder.createdAt}
                   </p>
                 </div>
 
@@ -774,7 +774,7 @@ function ClientPanel({ orders }) {
                 <div className="flex items-center gap-2">
                   <CheckCircle2 size={22} />
                   <p className="font-black">
-                    KFC confirmó que el pedido está completo.
+                    El restaurante confirmó que el pedido está completo.
                   </p>
                 </div>
 
@@ -828,8 +828,9 @@ function ClientPanel({ orders }) {
             <XCircle size={38} className="mx-auto" />
             <p className="mt-3 font-black">No encontramos esa orden</p>
             <p className="mt-1 text-sm">
-              Revisa que el número esté escrito igual que en el local. Si el
-              pedido estaba en revisión interna, todavía no aparece al cliente.
+              Revisa que el número esté escrito igual que en el restaurante. Si
+              el pedido estaba en revisión interna, todavía no aparece al
+              cliente.
             </p>
           </div>
         )}
@@ -860,7 +861,7 @@ export default function App() {
 
             <div>
               <h1 className="text-2xl font-black tracking-tight">
-                KFC CheckOrder
+                CheckOrder
               </h1>
               <p className="text-sm text-neutral-500">
                 Verificación visual de pedidos · Prototipo universitario
@@ -877,7 +878,7 @@ export default function App() {
                   : "text-neutral-600"
               }`}
             >
-              Local: KFC
+              Restaurante
             </button>
 
             <button
@@ -910,8 +911,8 @@ export default function App() {
                 </h2>
 
                 <p className="mt-4 max-w-2xl text-sm leading-6 text-white/70">
-                  El local sube una foto asociada al número de orden. Si el
-                  pedido está incompleto, queda en revisión interna y no se
+                  El restaurante sube una foto asociada al número de orden. Si
+                  el pedido está incompleto, queda en revisión interna y no se
                   publica al cliente hasta ser corregido.
                 </p>
               </div>
@@ -923,7 +924,7 @@ export default function App() {
                 <p className="mt-3 font-black">Contexto académico</p>
                 <p className="mt-2 text-sm leading-6 text-white/60">
                   Proyecto desarrollado para simular control de calidad y
-                  responsabilidad entre local, delivery y cliente.
+                  responsabilidad entre restaurante, delivery y cliente.
                 </p>
               </div>
 
@@ -950,8 +951,8 @@ export default function App() {
             />
           ) : (
             <LoginCard
-              title="Acceso Local: KFC"
-              subtitle="El local registra fotos y valida pedidos."
+              title="Acceso Restaurante"
+              subtitle="El restaurante registra fotos y valida pedidos."
               icon={Store}
               onLogin={() => setLocalLogged(true)}
             />
